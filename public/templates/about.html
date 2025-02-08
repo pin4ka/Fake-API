@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Fake API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #121212, #1f1f1f);
+            color: #fff;
+            text-align: center;
+            transition: background 0.5s, color 0.5s;
+            overflow-x: hidden;
+        }
+
+        body.light-mode {
+            background: linear-gradient(135deg, #ffffff, #f1f1f1);
+            color: #000;
+        }
+
+        /* Enhanced Responsive Navigation */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: rgba(31, 31, 31, 0.9);
+            position: relative;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        body.light-mode .header {
+            background-color: rgba(241, 241, 241, 0.9);
+        }
+
+        .nav-logo img {
+            height: 30px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a,
+        .nav-links button {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 18px;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s, transform 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links button:hover {
+            background-color: rgba(98, 0, 234, 0.2);
+            color: #6200ea;
+            transform: scale(1.05);
+        }
+
+        /* Improved Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            transition: transform 0.3s;
+            color: #fff;
+            background: none;
+            border: none;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        body.light-mode .menu-toggle {
+            color: #000;
+        }
+
+        .menu-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .menu-toggle:before {
+            content: '☰';
+            transition: transform 0.3s;
+        }
+
+        .menu-toggle.close:before {
+            content: '×';
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: fixed;
+                top: 60px;
+                right: 0;
+                background-color: rgba(31, 31, 31, 0.95);
+                backdrop-filter: blur(10px);
+                width: 100%;
+                padding: 20px 10px;
+                transform: translateX(100%);
+                z-index: 999;
+            }
+
+            body.light-mode .nav-links {
+                background-color: rgba(241, 241, 241, 0.95);
+            }
+
+            .nav-links.show {
+                display: flex;
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+
+
+        /* Main Content */
+        .main-content {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: rgba(31, 31, 31, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: background 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.light-mode .main-content {
+            background-color: rgba(249, 249, 249, 0.9);
+        }
+
+        .contributor-card a {
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        body.light-mode .contributor-card a {
+            color: #000;
+        }
+
+        .section {
+            margin: 8px 0;
+            padding: 8px;
+        }
+
+        /* Contributor Cards */
+        .contributors {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 14px;
+        }
+
+        .contributor-card {
+            position: relative;
+            padding: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.5s;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 10px rgba(98, 0, 234, 0.3);
+            }
+
+            100% {
+                box-shadow: 0 0 20px rgba(98, 0, 234, 0.6);
+            }
+        }
+
+        .contributor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.2),
+                    transparent);
+            animation: shine 3s infinite;
+        }
+
+        body.light-mode .contributor-card::before {
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(199, 47, 255, 0.42),
+                    transparent);
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 200%;
+            }
+        }
+
+        .contributor-card:hover {
+            transform: scale(1.05);
+            animation: hoverGlow 0.5s infinite alternate;
+        }
+
+        @keyframes hoverGlow {
+            0% {
+                box-shadow: 0 0 15px rgba(98, 0, 234, 0.4);
+            }
+
+            100% {
+                box-shadow: 0 0 25px rgba(98, 0, 234, 0.8);
+            }
+        }
+
+        .contributor-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Firecracker Styles */
+        .firecracker {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: explode 1s forwards;
+            z-index: 999;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(3) rotate(180deg);
+            }
+
+            100% {
+                transform: scale(5) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Party Elements */
+        .party {
+            position: absolute;
+            pointer-events: none;
+            animation: partyPop 0.8s ease-out forwards;
+            font-size: 20px;
+            z-index: 1000;
+        }
+
+        @keyframes partyPop {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.5);
+            }
+
+            100% {
+                transform: scale(1) translateY(-50px);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin: 20px;
+                padding: 15px;
+            }
+
+            .contributor-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="nav-logo">
+            <img src="../assets/Fake_API_logo.png" alt="Fake API Logo">
+        </div>
+        <button class="menu-toggle" id="menu-toggle"></button>
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/docs">Docs</a>
+            <button id="theme-toggle">🌙</button>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="section">
+            <h2>What is Fake API?</h2>
+            <p style="margin: 8px;">Fake API is a project that provides multiple types of APIs with diverse data for testing and building various types of software and websites. It allows developers to access pre-defined structured data without setting up a backend, making it useful for frontend development, prototyping, and testing API-based applications..</p>
+        </section>
+
+        <section class="section">
+            <h2>Technologies Used</h2>
+            <p style="margin: 8px;">Built using Node.js, Express.js, and hosted on render.</p>
+        </section>
+
+        <section class="section">
+            <h2>Open Source Contribution</h2>
+            <p style="margin: 8px;">We welcome contributions! Fork us on GitHub.</p>
+        </section>
+
+        <section class="section">
+            <h2>Contributors</h2>
+            <div class="contributors" id="contributors"></div>
+        </section>
+    </main>
+
+    <script>
+        // Theme Management
+        document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem("theme") === "light") {
+                document.body.classList.add("light-mode");
+                document.getElementById("theme-toggle").textContent = "🌞";
+            }
+            createFirecrackers();
+        });
+
+        document.getElementById("theme-toggle").addEventListener("click", function () {
+            document.body.classList.toggle("light-mode");
+            const theme = document.body.classList.contains("light-mode") ? "light" : "dark";
+            localStorage.setItem("theme", theme);
+            this.textContent = theme === "light" ? "🌞" : "🌙";
+        });
+
+        // Improved Mobile Menu Toggle
+        document.getElementById("menu-toggle").addEventListener("click", function () {
+            const navLinks = document.querySelector(".nav-links");
+            navLinks.classList.toggle("show");
+            this.classList.toggle("open");
+            this.classList.toggle("close");
+        });
+
+        // Contributors Data
+        const contributors = [
+            ["pin4ka", "Pinaka"],
+        ];
+
+        const container = document.getElementById("contributors");
+        contributors.forEach(([username, name]) => {
+            const card = document.createElement("div");
+            card.className = "contributor-card";
+            card.innerHTML = `
+                <a href="https://github.com/${username}" target="_blank">
+                    <img src="https://github.com/${username}.png" alt="${name}">
+                    <p class="namtxt">${name}</p>
+                </a>
+            `;
+
+            // Party effect on hover
+            card.addEventListener('mouseenter', function (e) {
+                createParticles(this.getBoundingClientRect());
+                createFirecrackers(this.getBoundingClientRect());
+            });
+
+            container.appendChild(card);
+        });
+
+        // Party Particles
+        function createParticles(rect) {
+            const partyEmojis = ['🎉', '✨', '🎆', '🌟', '💫', '🔥'];
+            for (let i = 0; i < 8; i++) {
+                const party = document.createElement('div');
+                party.className = 'party';
+                party.style.left = `${rect.left + Math.random() * rect.width}px`;
+                party.style.top = `${rect.top + Math.random() * rect.height}px`;
+                party.textContent = partyEmojis[Math.floor(Math.random() * partyEmojis.length)];
+                document.body.appendChild(party);
+                setTimeout(() => party.remove(), 800);
+            }
+        }
+
+        // Firecrackers
+        function createFirecrackers(bounds) {
+            const colors = ['#ff0000', '#00ff00', '#ffff00', '#00ffff', '#ff00ff'];
+            for (let i = 0; i < 5; i++) {
+                const cracker = document.createElement('div');
+                cracker.className = 'firecracker';
+                cracker.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                cracker.style.left = `${(bounds?.left || Math.random() * window.innerWidth) + (bounds?.width / 2 || 0)}px`;
+                cracker.style.top = `${(bounds?.top || Math.random() * window.innerHeight) + (bounds?.height / 2 || 0)}px`;
+                document.body.appendChild(cracker);
+                setTimeout(() => cracker.remove(), 1000);
+            }
+        }
+
+        // Random firecrackers
+        setInterval(() => createFirecrackers(), 3000);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake API - Documentation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #121212, #1f1f1f);
+            color: #fff;
+            text-align: center;
+            transition: background 0.5s, color 0.5s;
+            overflow-x: hidden;
+        }
+
+        body.light-mode {
+            background: linear-gradient(135deg, #ffffff, #f1f1f1);
+            color: #000;
+        }
+
+        /* Navigation Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: rgba(31, 31, 31, 0.9);
+            position: relative;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        body.light-mode .header {
+            background-color: rgba(241, 241, 241, 0.9);
+        }
+
+        .nav-logo img {
+            height: 30px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a,
+        .nav-links button {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 18px;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s, transform 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links button:hover {
+            background-color: rgba(98, 0, 234, 0.2);
+            color: #6200ea;
+            transform: scale(1.05);
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            transition: transform 0.3s;
+            color: #fff;
+            background: none;
+            border: none;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        body.light-mode .menu-toggle {
+            color: #000;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: fixed;
+                top: 60px;
+                right: 0;
+                background-color: rgba(31, 31, 31, 0.95);
+                backdrop-filter: blur(10px);
+                width: 100%;
+                padding: 20px 10px;
+                transform: translateX(100%);
+                z-index: 999;
+            }
+
+            body.light-mode .nav-links {
+                background-color: rgba(241, 241, 241, 0.95);
+            }
+
+            .nav-links.show {
+                display: flex;
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        /* IDE Container */
+        .ide-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: rgba(31, 31, 31, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        body.light-mode .ide-container {
+            background-color: rgba(249, 249, 249, 0.9);
+        }
+
+        /* IDE Header */
+        .ide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-mode .ide-header {
+            background: rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Tabs Dropdown */
+        .mobile-tabs-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            padding: 8px;
+            border-radius: 5px;
+            background: rgba(98, 0, 234, 0.2);
+            transition: background 0.3s;
+            color: #fff; /* Default color for dark mode */
+        }
+
+        body.light-mode .mobile-tabs-toggle {
+            color: #000; /* Color for light mode */
+        }
+
+        .mobile-tabs-toggle:hover {
+            background: rgba(98, 0, 234, 0.3);
+        }
+
+        .mobile-tabs {
+            display: flex;
+            position:relative;
+            /* top: 50px; */
+            /* left: 15px; */
+            background: rgba(31, 31, 31, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            padding: 10px;
+            /* flex-direction: column; */
+            gap: 8px;
+        }
+
+        body.light-mode .mobile-tabs {
+            background: rgba(241, 241, 241, 0.95);
+        }
+
+        .mobile-tabs.show {
+            display: flex;
+        }
+        
+        i{
+            /* height: 50px; */
+            font-size:xx-large;
+            cursor: pointer;
+            margin: 0px 8px;
+        }
+        
+        @media (max-width: 768px) {
+        .mobile-tabs {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 15px;
+            z-index: 1000;
+            padding: 10px;
+            flex-direction: column;
+            gap: 8px;
+        }
+            .ide-tabs {
+                display: none; /* This line hides the tabs in mobile view */
+            }
+
+            .mobile-tabs-toggle {
+                display: block; /* Show mobile tabs toggle button */
+            }
+
+            .ide-tab {
+                padding: 8px;
+                justify-content: center;
+            }
+
+            .ide-tab span {
+                display: none;
+            }
+
+            .ide-tab i {
+                font-size: 38px;
+            }
+        }
+
+        /* IDE Body */
+        .ide-body {
+            position: relative;
+            padding: 20px;
+        }
+
+        .code-container {
+            display: none;
+        }
+
+        .code-container.active {
+            display: block;
+        }
+
+        pre {
+            margin: 0;
+            padding: 0;
+            background: none !important;
+            white-space: pre-wrap; /* Ensure text wraps */
+            word-break: break-word; /* Break long words */
+            overflow-x: auto; /* Add horizontal scroll if needed */
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            padding: 10px;
+            display: block;
+            border-radius: 4px;
+            /* background: rgba(0, 0, 0, 0.3) !important; */
+            white-space: pre-wrap; /* Ensure text wraps */
+            word-break: break-word; /* Break long words */
+        }
+
+        body.light-mode code {
+            background: rgba(0, 0, 0, 0.05) !important;
+        }
+
+        /* Copy Button */
+        .copy-btn {
+            background: #6200ea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .copy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: left 0.5s;
+        }
+
+        .copy-btn:hover::before {
+            left: 100%;
+        }
+
+        .copy-btn:hover {
+            background: #3700b3;
+            transform: scale(1.05);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .copy-btn i {
+            font-size: 16px;
+        }
+
+        /* Notification System */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(98, 0, 234, 0.9);
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-logo">
+            <img src="../assets/Fake_API_logo.png" alt="Fake API Logo">
+        </div>
+        <button class="menu-toggle" id="menu-toggle">☰</button>
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/docs">Docs</a>
+            <button id="theme-toggle">🌙</button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="ide-container">
+            <div class="ide-header">
+                <button class="mobile-tabs-toggle" id="mobile-tabs-toggle">
+                    <i class="fas fa-code"></i>
+                </button>
+                <div class="mobile-tabs" id="mobile-tabs">
+                    <div class="ide-tab active" data-tab="js">
+                        <i class="fab fa-js"></i>
+                    </div>
+                    <div class="ide-tab" data-tab="python">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <div class="ide-tab" data-tab="go">
+                        <i class="fab fa-golang"></i>
+                    </div>
+                    <div class="ide-tab" data-tab="java">
+                        <i class="fab fa-java"></i>
+                    </div>
+                    <div class="ide-tab" data-tab="c">
+                        <i class="fas fa-c"></i>
+                    </div>
+                </div>
+                <button class="copy-btn" id="copy-button">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+
+            <div class="ide-body">
+                <div class="code-container active" id="js-code">
+                    <pre><code class="language-javascript">async function fetchData() {
+    const response = await fetch("https://fake-api-test-tinb.onrender.com/api/posts");
+    const data = await response.json();
+    console.log(data);
+}
+fetchData();</code></pre>
+                </div>
+
+                <div class="code-container" id="python-code">
+                    <pre><code class="language-python">import requests
+response = requests.get("https://fake-api-test-tinb.onrender.com/api/posts")
+print(response.json())</code></pre>
+                </div>
+
+                <div class="code-container" id="go-code">
+                    <pre><code class="language-go">package main
+import ( 
+    "fmt" 
+    "net/http" 
+    "io/ioutil" 
+)
+func main() {
+    resp, _ := http.Get("https://fake-api-test-tinb.onrender.com/api/posts");
+    body, _ := ioutil.ReadAll(resp.Body);
+    fmt.Println(string(body));
+}</code></pre>
+                </div>
+
+                <div class="code-container" id="java-code">
+                    <pre><code class="language-java">import java.net.*;
+import java.io.*;
+public class Main {
+    public static void main(String[] args) throws Exception {
+        URL url = new URL("https://fake-api-test-tinb.onrender.com/api/posts");
+        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+        String inputLine;
+        while ((inputLine = in.readLine()) != null) System.out.println(inputLine);
+        in.close();
+    }
+}</code></pre>
+                </div>
+
+                <div class="code-container" id="c-code">
+                    <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+int main() {
+    system("curl -s https://fake-api-test-tinb.onrender.com/api/posts");
+    return 0;
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="notification" id="notification">Copied to clipboard!</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script>
+        // Theme Management
+        document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem("theme") === "light") {
+                document.body.classList.add("light-mode");
+                document.getElementById("theme-toggle").textContent = "🌞";
+            }
+        });
+
+        document.getElementById("theme-toggle").addEventListener("click", function() {
+            document.body.classList.toggle("light-mode");
+            const theme = document.body.classList.contains("light-mode") ? "light" : "dark";
+            localStorage.setItem("theme", theme);
+            this.textContent = theme === "light" ? "🌞" : "🌙";
+        });
+
+        // Mobile Menu Toggle
+        document.getElementById("menu-toggle").addEventListener("click", function() {
+            const navLinks = document.querySelector(".nav-links");
+            navLinks.classList.toggle("show");
+            this.textContent = this.textContent === "☰" ? "×" : "☰";
+        });
+
+        // Mobile Tabs Toggle
+        const mobileTabsToggle = document.getElementById('mobile-tabs-toggle');
+        const mobileTabs = document.getElementById('mobile-tabs');
+
+        mobileTabsToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event from bubbling up
+            mobileTabs.classList.toggle('show');
+        });
+
+        // Close mobile tabs when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileTabs.contains(e.target) && !mobileTabsToggle.contains(e.target)) {
+                mobileTabs.classList.remove('show');
+            }
+        });
+
+        // IDE Tabs Functionality
+        const tabs = document.querySelectorAll('.ide-tab');
+        const codeContainers = document.querySelectorAll('.code-container');
+        const copyButton = document.getElementById('copy-button');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                codeContainers.forEach(container => container.classList.remove('active'));
+                tab.classList.add('active');
+                const target = tab.getAttribute('data-tab');
+                document.getElementById(`${target}-code`).classList.add('active');
+                mobileTabs.classList.remove('show'); // Close mobile tabs after selection
+            });
+        });
+
+        // Copy Functionality
+        copyButton.addEventListener('click', () => {
+            const activeCode = document.querySelector('.code-container.active code').textContent;
+            navigator.clipboard.writeText(activeCode).then(() => {
+                showNotification();
+            });
+        });
+
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

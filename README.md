@@ -1,7 +1,7 @@
 ![Fake API Logo](https://github.com/rax-2/Fake-API/blob/main/public/assets/Fake_API_logo.png?raw=true)
 
-# Fake API 🚀  
-
+<!-- # Fake API 🚀 -->
+---
 **Fake API** is a free, open-source dummy API designed to simplify API handling in frontend projects, helping developers test and integrate APIs smoothly. It provides structured test data across various endpoints, making it perfect for learning, practicing, and building applications.  
 
 ## 🌟 Features  
